@@ -13,10 +13,23 @@ function createHQScene() {
 
         create() {
             const map = this.make.tilemap({ key: 'hq_map' });
+            console.log('Map loaded:', map);
+            console.log('Map tilesets:', map.tilesets);
+            
             const tileset = map.addTilesetImage('tinytown', 'tiles');
+            console.log('Tileset created:', tileset);
+            
+            // Check if layers exist before creating them
+            console.log('Available layers:', map.layers.map(layer => layer.name));
+            
             const groundLayer = map.createLayer('Ground', tileset, 0, 0);
+            console.log('Ground layer:', groundLayer);
+            
             const wallsLayer = map.createLayer('Walls', tileset, 0, 0);
+            console.log('Walls layer:', wallsLayer);
+            
             const objectsLayer = map.createLayer('Objects', tileset, 0, 0);
+            console.log('Objects layer:', objectsLayer);
 
             this.player = this.physics.add.sprite(100, 100, 'player');
             this.player.setCollideWorldBounds(true);
