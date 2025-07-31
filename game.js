@@ -20,8 +20,8 @@ class HQScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('tiles', 'assets/tilemap.png');
-        this.load.tilemapTiledJSON('hq_map', 'assets/hq_floor1.json');
+        this.load.image('tiles', '/assets/tilemap.png');
+        this.load.tilemapTiledJSON('hq_map', '/assets/hq_floor1.json');
         this.load.image('player', 'https://labs.phaser.io/assets/sprites/phaser-dude.png');
     }
 
@@ -75,8 +75,8 @@ class StairsScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('tiles', 'assets/tilemap.png');
-        this.load.tilemapTiledJSON('stairs_map', 'assets/stairs.json');
+        this.load.image('tiles', '/assets/tilemap.png');
+        this.load.tilemapTiledJSON('stairs_map', '/assets/stairs.json');
         this.load.image('player', 'https://labs.phaser.io/assets/sprites/phaser-dude.png');
     }
 
