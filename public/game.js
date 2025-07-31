@@ -1,7 +1,7 @@
 const config = {
     type: Phaser.AUTO,
-    width: 960, // 30 tiles * 32px
-    height: 640, // 20 tiles * 32px
+    width: 480, // 30 tiles * 16px
+    height: 320, // 20 tiles * 16px
     physics: {
         default: 'arcade',
         arcade: {
@@ -22,41 +22,35 @@ class HQScene extends Phaser.Scene {
     preload() {
         this.load.image('tiles', 'assets/tilemap.png');
         this.load.tilemapTiledJSON('hq_map', 'assets/hq_floor1.json');
-        // Simple player sprite (replace with your own if needed)
         this.load.image('player', 'https://labs.phaser.io/assets/sprites/phaser-dude.png');
     }
 
     create() {
-        // Load the tilemap
         const map = this.make.tilemap({ key: 'hq_map' });
         const tileset = map.addTilesetImage('tinytown', 'tiles');
-        const layer = map.createLayer('Tile Layer 1', tileset, 0, 0); // Adjust layer name as per your Tiled map
+        const groundLayer = map.createLayer('Ground', tileset, 0, 0);
+        const wallsLayer = map.createLayer('Walls', tileset, 0, 0);
+        const objectsLayer = map.createLayer('Objects', tileset, 0, 0);
 
-        // Player setup
         this.player = this.physics.add.sprite(100, 100, 'player');
         this.player.setCollideWorldBounds(true);
 
-        // Camera follows player
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-        // Collision with map (assuming you have a collision layer in Tiled)
-        const collisionLayer = map.getLayer('Collision Layer')?.tilemapLayer; // Adjust layer name
+        const collisionLayer = map.getLayer('Walls')?.tilemapLayer;
         if (collisionLayer) {
-            collisionLayer.setCollisionByExclusion([-1]);
+            collisionLayer.setCollisionByExclusion([-1]); // Collide with all non-empty tiles in Walls
             this.physics.add.collider(this.player, collisionLayer);
         }
 
-        // Transition trigger (e.g., a door at tile position x:28, y:10)
-        this.transitionZone = new Phaser.Geom.Rectangle(28 * 32, 10 * 32, 32, 32);
+        this.transitionZone = new Phaser.Geom.Rectangle(22 * 16, 2 * 16, 16, 16); // Adjusted for door at (22,2)
         this.physics.world.enableBody(this.transitionZone);
 
-        // Keyboard controls
         this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     update() {
-        // Player movement
         this.player.setVelocity(0);
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
@@ -69,7 +63,6 @@ class HQScene extends Phaser.Scene {
             this.player.setVelocityY(160);
         }
 
-        // Check for transition to StairsScene
         if (Phaser.Geom.Rectangle.ContainsPoint(this.transitionZone, this.player)) {
             this.scene.start('StairsScene', { playerX: 100, playerY: 100 });
         }
@@ -88,36 +81,31 @@ class StairsScene extends Phaser.Scene {
     }
 
     create(data) {
-        // Load the tilemap
         const map = this.make.tilemap({ key: 'stairs_map' });
         const tileset = map.addTilesetImage('tinytown', 'tiles');
-        const layer = map.createLayer('Tile Layer 1', tileset, 0, 0); // Adjust layer name
+        const groundLayer = map.createLayer('Ground', tileset, 0, 0);
+        const wallsLayer = map.createLayer('Walls', tileset, 0, 0);
+        const objectsLayer = map.createLayer('Objects', tileset, 0, 0);
 
-        // Player setup
         this.player = this.physics.add.sprite(data.playerX || 100, data.playerY || 100, 'player');
         this.player.setCollideWorldBounds(true);
 
-        // Camera follows player
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-        // Collision layer
-        const collisionLayer = map.getLayer('Collision Layer')?.tilemapLayer; // Adjust layer name
+        const collisionLayer = map.getLayer('Walls')?.tilemapLayer;
         if (collisionLayer) {
             collisionLayer.setCollisionByExclusion([-1]);
             this.physics.add.collider(this.player, collisionLayer);
         }
 
-        // Transition back to HQScene
-        this.transitionZone = new Phaser.Geom.Rectangle(2 * 32, 10 * 32, 32, 32);
+        this.transitionZone = new Phaser.Geom.Rectangle(2 * 16, 10 * 16, 16, 16);
         this.physics.world.enableBody(this.transitionZone);
 
-        // Keyboard controls
         this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     update() {
-        // Player movement
         this.player.setVelocity(0);
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
@@ -130,9 +118,8 @@ class StairsScene extends Phaser.Scene {
             this.player.setVelocityY(160);
         }
 
-        // Check for transition back to HQScene
         if (Phaser.Geom.Rectangle.ContainsPoint(this.transitionZone, this.player)) {
-            this.scene.start('HQScene', { playerX: 28 * 32, playerY: 10 * 32 });
+            this.scene.start('HQScene', { playerX: 22 * 16, playerY: 2 * 16 });
         }
     }
 }
