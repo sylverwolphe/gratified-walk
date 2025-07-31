@@ -1,11 +1,12 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/',
-  server: {
-    port: 3000,
-  },
+  base: './', // Important for relative paths
   build: {
     outDir: 'dist',
+    assetsDir: 'assets'
   },
-});
+  server: {
+    port: 3000
+  }
+})
