@@ -1,19 +1,3 @@
-const config = {
-    type: Phaser.AUTO,
-    width: 480, // 30 tiles * 16px
-    height: 320, // 20 tiles * 16px
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 0 },
-            debug: false
-        }
-    },
-    scene: [HQScene, StairsScene]
-};
-
-const game = new Phaser.Game(config);
-
 class HQScene extends Phaser.Scene {
     constructor() {
         super({ key: 'HQScene' });
@@ -68,6 +52,23 @@ class HQScene extends Phaser.Scene {
         }
     }
 }
+
+// Initialize the game after all classes are defined
+const config = {
+    type: Phaser.AUTO,
+    width: 480, // 30 tiles * 16px
+    height: 320, // 20 tiles * 16px
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
+    },
+    scene: [HQScene, StairsScene]
+};
+
+const game = new Phaser.Game(config);
 
 class StairsScene extends Phaser.Scene {
     constructor() {
