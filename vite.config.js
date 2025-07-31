@@ -4,7 +4,7 @@ export default defineConfig({
   base: './',
   build: {
     outDir: 'dist',
-    // Remove the assetsDir line - let Vite use default
+    assetsDir: 'static' // Use a different name to avoid conflict
   },
   server: {
     port: 3000
