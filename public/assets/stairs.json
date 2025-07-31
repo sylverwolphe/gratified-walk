@@ -101,11 +101,20 @@
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
  "tileheight":16,
- "tilesets":[
-        {
-         "firstgid":1,
-         "source":"..\/..\/..\/Downloads\/kenney_tiny-town\/tinytown.tsx"
-        }],
+ "tilesets": [
+    {
+     "firstgid": 1,
+     "image": "assets/tilemap.png",
+     "imageheight": 128,
+     "imagewidth": 128,
+     "margin": 0,
+     "name": "tinytown",
+     "spacing": 0,
+     "tilecount": 64,
+     "tileheight": 16,
+     "tilewidth": 16
+    }
+],
  "tilewidth":16,
  "type":"map",
  "version":"1.10",
