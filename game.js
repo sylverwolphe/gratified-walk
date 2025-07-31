@@ -27,46 +27,23 @@ class HQScene extends Phaser.Scene {
         // Check if the map data loaded properly
         const mapData = this.cache.tilemap.get('hq_map');
         console.log('Raw map data from cache:', mapData);
+        console.log('Map data keys:', Object.keys(mapData.data));
+        console.log('Map data structure:', JSON.stringify(mapData.data, null, 2));
         
         if (!mapData) {
             console.error('No map data found for hq_map!');
             return;
         }
         
-        const map = this.make.tilemap({ key: 'hq_map' });
-        console.log('Map object created:', map);
-        console.log('Map width:', map.width, 'Map height:', map.height);
-        console.log('Map tilesets:', map.tilesets);
-        console.log('Map layers:', map.layers);
-        
-        if (map.tilesets.length === 0) {
-            console.error('No tilesets found in map!');
+        try {
+            console.log('About to create tilemap...');
+            const map = this.make.tilemap({ key: 'hq_map' });
+            console.log('Map object created successfully:', map);
+        } catch (error) {
+            console.error('Error creating tilemap:', error);
+            console.error('Error stack:', error.stack);
             return;
         }
-        
-        // Check if the tileset image loaded
-        const tilesTexture = this.textures.get('tiles');
-        console.log('Tiles texture:', tilesTexture);
-        
-        if (!tilesTexture.valid) {
-            console.error('Tiles texture did not load properly!');
-            return;
-        }
-        
-        console.log('About to add tileset image...');
-        const tileset = map.addTilesetImage('tinytown', 'tiles');
-        console.log('Tileset created:', tileset);
-        
-        if (!tileset) {
-            console.error('Failed to create tileset!');
-            return;
-        }
-        
-        // Only create layers if tileset worked
-        console.log('Creating layers...');
-        const groundLayer = map.createLayer('Ground', tileset, 0, 0);
-        const wallsLayer = map.createLayer('Walls', tileset, 0, 0);
-        const objectsLayer = map.createLayer('Objects', tileset, 0, 0);
 
         this.player = this.physics.add.sprite(100, 100, 'player');
         this.player.setCollideWorldBounds(true);
